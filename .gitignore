@@ -83,3 +83,6 @@ pickle-email-*.html
 
 # vim artifacts
 **.swp
+
+#database settings.
+config/database.yml
