@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :verify, only: [:index]
+  post '/verify' => 'verify#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
