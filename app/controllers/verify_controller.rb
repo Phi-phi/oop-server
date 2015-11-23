@@ -2,16 +2,16 @@ class VerifyController < ApplicationController
   def index
     @params = user_params
     @user = User.where(macaddr: @params[:my_addr]).first
-    @now_ap = AccessPoint.where(macaddr: @params[:ap_addr]).first 
+    @new_ap = AccessPoint.where(macaddr: @params[:ap_addr]).first 
     if @user.blank?
       self.create
     else
-      self.ap_check
+      self.update
     end
 
     result = {
       'my_addr'   => @user.macaddr,
-      'ap_addr'   => @now_ap.macaddr,
+      'ap_addr'   => @new_ap.macaddr,
       'classroom' => {
         'name'  => @user.classroom.name,
         'x'     => @user.classroom.location[0],
@@ -22,11 +22,11 @@ class VerifyController < ApplicationController
     render :json => result
   end
 
-  def ap_check
-    past_ap = @user.access_point
+  def update
+    current_ap = @user.access_point
 
-    if past_ap.macaddr != @now_ap.macaddr
-      @user.access_point_id = @now_ap.id
+    if current_ap.macaddr != @new_ap.macaddr
+      @user.access_point_id = @new_ap.id
       @user.save
     end
   end
