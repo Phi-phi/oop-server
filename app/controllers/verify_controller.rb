@@ -8,6 +8,18 @@ class VerifyController < ApplicationController
     else
       self.ap_check
     end
+
+    result = {
+      'my_addr'   => @user.macaddr,
+      'ap_addr'   => @now_ap.macaddr,
+      'classroom' => {
+        'name'  => @user.classroom.name,
+        'x'     => @user.classroom.location[0],
+        'y'     => @user.classroom.location[1]
+      }
+    }
+
+    render :json => result
   end
 
   def ap_check
