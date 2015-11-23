@@ -1,11 +1,12 @@
 class VerifyController < ApplicationController
   def index
-    @user = User.where(macaddr: user_params[:my_addr])
-    @now_ap = AccessPoint.where(macaddr: user_params[:ap_addr]) 
+    @params = user_params
+    @user = User.where(macaddr: @params[:my_addr]).first
+    @now_ap = AccessPoint.where(macaddr: @params[:ap_addr]).first 
     if @user.blank?
-      redirect_to action: 'create'
+      self.create
     else
-      redirect_to action: 'ap_check'
+      self.ap_check
     end
   end
 
@@ -20,7 +21,7 @@ class VerifyController < ApplicationController
 
   def create
     @user = User.new(
-      :macaddr => user_params[:my_addr],
+      :macaddr => @params[:my_addr],
       :access_point_id => @now_ap.id
     )
     @user.save
