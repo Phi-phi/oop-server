@@ -86,3 +86,6 @@ pickle-email-*.html
 
 #database settings.
 config/database.yml
+
+#database seeds
+db/seeds.rb
