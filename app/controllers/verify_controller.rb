@@ -34,7 +34,7 @@ class VerifyController < ApplicationController
   def create
     @user = User.new(
       :macaddr => @params[:my_addr],
-      :access_point_id => @now_ap.id
+      :access_point_id => @new_ap.id
     )
     @user.save
   end
