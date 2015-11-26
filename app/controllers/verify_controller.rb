@@ -22,6 +22,9 @@ class VerifyController < ApplicationController
     render :json => result
   end
 
+  def getsample
+  end
+
   def update
     current_ap = @user.access_point
 
