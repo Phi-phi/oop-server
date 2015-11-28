@@ -88,4 +88,4 @@ pickle-email-*.html
 config/database.yml
 
 #database seeds
-db/seeds.rb
+#db/seeds.rb

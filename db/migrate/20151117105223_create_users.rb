@@ -1,6 +1,7 @@
 class CreateUsers < ActiveRecord::Migration
   def change
     create_table :users do |t|
+      #t.string :name
       t.string :macaddr,          null:false
       t.integer :access_point_id, null:false
 
