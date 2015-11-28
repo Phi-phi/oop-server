@@ -23,15 +23,15 @@ class RequestController < ApplicationController
 
     Building.all.select(:id, :name).each do |buil|
       detail_hash = Hash.new
-      buil_count = 0
+      buil_users = 0
       Classroom.where(building_id: buil.id).select(:id, :name).each do |clas|
         # 今学校にいる人数(a_p_idが0じゃない人)の数えあげ
-        clas_num = clas.users.where.not(access_point_id:0).count
-        detail_hash[clas.name] = clas_num
-        buil_count += clas_num
+        clas_users = clas.users.where.not(access_point_id:0).count
+        detail_hash[clas.name] = clas_users
+        buil_users += clas_users
       end
       json_hash[buil.name] = [
-          buil_count,
+          buil_users,
           detail_hash
       ]
     end
