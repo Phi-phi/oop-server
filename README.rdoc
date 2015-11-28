@@ -6,14 +6,18 @@ application up and running.
 Things you may want to cover:
 
 * Ruby version
+ - Ruby 2.2.0
 
 * System dependencies
 
 * Configuration
 
 * Database creation
+ create in postgresql
 
 * Database initialization
+   rake db:migrate:reset
+   rake db:seed
 
 * How to run the test suite
 
@@ -26,3 +30,9 @@ Things you may want to cover:
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
+
+
+=== TODO
+
+* RDocよりYARDのほうがいいかもしれない
+* 開発終わるまでにLicenceの解決
