@@ -27,8 +27,13 @@ class VerifyController < ApplicationController
         render(nothing: true, status: 500) and return
       end
     end
-    @user = User.where(macaddr: @params[:my_addr]).first
-    @new_ap = AccessPoint.where(macaddr: @params[:ap_addr]).first
+
+    # @user = User.where(macaddr: @params[:my_addr]).first
+    # @new_ap = AccessPoint.where(macaddr: @params[:ap_addr]).first
+    #   where().firstじゃなくてwhere().takeになる(find_by()は等価)けど一意に決まってるしこれでいいのでは
+    @user = User.find_by(macaddr: @params[:my_addr])
+    @new_ap = AccessPoint.find_by(macaddr: @params[:ap_addr])
+
     if @user.blank?
       self.create
     else
