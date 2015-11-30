@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   post  '/verify' => 'verify#index'
   get '/verify' => 'verify#getsample'
+  get '/request/distribution' => 'request#distribution'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
