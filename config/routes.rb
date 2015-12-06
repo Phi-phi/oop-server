@@ -1,7 +1,17 @@
 Rails.application.routes.draw do
   post  '/verify' => 'verify#index'
   get '/verify' => 'verify#getsample'
-  get '/request/distribution' => 'request#distribution'
+
+  #post  '/account' => 'account#index'
+
+  post '/account/create.json' => 'account#create'
+  post '/account/create' => 'account#create'
+  post '/account/register.json' => 'account#create'
+  post  '/account/update.json' => 'account#update'
+  post  '/account/logout.json' => 'account#logout'
+  post  '/account/delete.json' => 'account#delete'
+
+  get '/data/distribution/all.json' => 'data#distribution'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

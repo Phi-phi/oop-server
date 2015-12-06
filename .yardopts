@@ -1,0 +1,4 @@
+--markup markdown # markdown で書けるようになる (ex. "textile", "rdoc", "ruby", "text", "html", "none"
+--markup-provider kramdown # <= お好みで。annotate 使ってる場合は必須
+--no-private
+--hide-api private

@@ -56,12 +56,12 @@ TEST_ACCESS_POINTS = [
 ]
 
 TEST_USERS = [
-    { macaddr:"FF:FF:FF:FF:FF:01", access_point_id:1 },
-    { macaddr:"FF:FF:FF:FF:FF:02", access_point_id:1 },
-    { macaddr:"FF:FF:FF:FF:FF:03", access_point_id:1 },
-    { macaddr:"FF:FF:FF:FF:FF:04", access_point_id:4 },
-    { macaddr:"FF:FF:FF:FF:FF:05", access_point_id:5 },
-    { macaddr:"FF:FF:FF:FF:FF:06", access_point_id:6 }
+    { macaddr:"FF:FF:FF:FF:FF:01", access_point_id:1, password:"", secret:"" },
+    { macaddr:"FF:FF:FF:FF:FF:02", access_point_id:1, password:"", secret:"" },
+    { macaddr:"FF:FF:FF:FF:FF:03", access_point_id:1, password:"", secret:"" },
+    { macaddr:"FF:FF:FF:FF:FF:04", access_point_id:4, password:"", secret:"" },
+    { macaddr:"FF:FF:FF:FF:FF:05", access_point_id:5, password:"", secret:"" },
+    { macaddr:"FF:FF:FF:FF:FF:06", access_point_id:6, password:"", secret:"" }
 ]
 
 

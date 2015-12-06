@@ -46,6 +46,11 @@ ActiveRecord::Schema.define(version: 20151127140126) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "password"
+    t.string   "secret"
+    t.string   "keyword"
+    t.string   "salt"
     t.string   "macaddr",         null: false
     t.integer  "access_point_id", null: false
     t.datetime "created_at",      null: false
