@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   post  '/account/logout.json' => 'account#logout'
   post  '/account/delete.json' => 'account#delete'
 
-  get '/data/distribution/all.json' => 'data#distribution'
+  get '/data/distribution/all.json' => 'data#distribution_all'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

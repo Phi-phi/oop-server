@@ -18,20 +18,15 @@ class DataController < ApplicationController
   #  }
   # となっている。
 
-  def distribution
-    json_hash = Hash.new
+  def distribution_all
     body_hash = Hash.new
 
-    testarray = Array.new
-    # 1. errorではない
-    json_hash[:error] = false
-
-    # 2. 建物・教室ごとの情報を集める
+    # 1. 建物・教室ごとの情報を集める
     Building.all.select(:id, :name).each do |buil|
       detail_hash = Hash.new
       buil_users = 0
       Classroom.where(building_id: buil.id).select(:id, :name).each do |clas|
-        # 今学校にいる人数(a_p_idが0じゃない人)の数えあげ
+        # 2. 今学校にいる人数(a_p_idが0じゃない人)の数えあげ
         clas_users = clas.users.where.not(access_point_id:0).count
         detail_hash[clas.name] = clas_users
         buil_users += clas_users
@@ -42,21 +37,23 @@ class DataController < ApplicationController
           buil_users,
           detail_hash
       ]
-
-      testarray << buil_users
     end
 
-    p testarray
-    puts body_hash
-
-    # 4. Hash自体を作る
-    json_hash[:body] = body_hash
-
-    render :json => json_hash.to_json
+    render_result(body:body_hash)
   end
 
   private
   def user_params
     params.permit(:my_addr, :ap_addr, :classroom)
+  end
+
+  def render_result(error:false, message:"", body:Hash.new, status:200)
+    result = {
+        :error => error,
+        :message => message,
+        :body => body
+    }
+
+    render :json => result, status:status
   end
 end

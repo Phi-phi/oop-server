@@ -4,8 +4,8 @@ class CreateUsers < ActiveRecord::Migration
       t.string :name
       t.string :password#,         null:false # will be auto-generated
       t.string :secret#,           null:false # don't let user insert this
-      t.string :keyword
-      t.string :salt
+      t.string :keyword#,         null:false # will be auto-generated
+      t.string :salt#,           null:false # don't let user insert this
       t.string :macaddr,          null:false
       t.integer :access_point_id, null:false
 
