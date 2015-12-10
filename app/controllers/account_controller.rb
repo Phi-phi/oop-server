@@ -31,7 +31,7 @@ class AccountController < ApplicationController
     current_ap = AccessPoint.find(@user.access_point_id)
     if current_ap.macaddr != @new_ap.macaddr
       @user.access_point_id = @new_ap.id
-      @user.save
+      @user.save!
     end
 
     body = {
@@ -64,7 +64,7 @@ class AccountController < ApplicationController
 
     # 0が不在を表します
     @user.access_point_id = 0
-    @user.save
+    @user.save!
 
     body = {
         :created_at => @user.created_at,
@@ -135,7 +135,7 @@ class AccountController < ApplicationController
         :salt => salt,
         :keyword => UserPassword::make_password(salt, @params[:keyword])
     )
-    @user.save
+    @user.save!
 
     body = {
         :created_at => @user.created_at,
