@@ -1,0 +1,673 @@
+Index: app/helpers/account_helper.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/helpers/account_helper.rb	(revision )
++++ app/helpers/account_helper.rb	(revision )
+@@ -0,0 +1,2 @@
++module AccountHelper
++end
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .gitignore	(date 1448876692000)
++++ .gitignore	(revision )
+@@ -89,3 +89,6 @@
+ 
+ #database seeds
+ #db/seeds.rb
++
++#YARD documents
++/doc
+\ No newline at end of file
+Index: Gemfile
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Gemfile	(date 1448876692000)
++++ Gemfile	(revision )
+@@ -25,6 +25,9 @@
+ # bundle exec rake doc:rails generates the API under doc/api.
+ gem 'sdoc', '~> 0.4.0', group: :doc
+ 
++# for Heroku
++gem 'rails_12factor', group: :production
++
+ # Use ActiveModel has_secure_password
+ # gem 'bcrypt', '~> 3.1.7'
+ 
+@@ -45,7 +48,15 @@
+ 
+   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+   gem 'spring'
++
++  # Rails ERD図を作ってくれる
++  gem "rails-erd"
++
++  # Databaseのjsonを作ってくれる(みやすい)
++  gem 'schemadoc'
+ end
+ 
+-# for Heroku
+-gem 'rails_12factor', group: :production
+\ No newline at end of file
++group :doc, :development do
++  gem 'yard', require: false
++  gem 'kramdown'
++end
+\ No newline at end of file
+Index: app/views/verify/getsample.html.erb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/views/verify/getsample.html.erb	(date 1448876692000)
++++ app/views/verify/getsample.html.erb	(revision )
+@@ -4,6 +4,6 @@
+         <title>GET SAMPLE</title>
+     </head>
+     <body>
+-        <h1>GET OK!!!</h1>
++        <h1>GET OK!!! <%= @me %></h1>
+     </body>
+ </html>
+Index: Gemfile.lock
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Gemfile.lock	(date 1448876692000)
++++ Gemfile.lock	(revision )
+@@ -41,6 +41,7 @@
+       debug_inspector (>= 0.0.1)
+     builder (3.2.2)
+     byebug (8.2.0)
++    choice (0.2.0)
+     coffee-rails (4.1.0)
+       coffee-script (>= 2.2.0)
+       railties (>= 4.0.0, < 5.0)
+@@ -51,6 +52,8 @@
+     debug_inspector (0.0.2)
+     erubis (2.7.0)
+     execjs (2.6.0)
++    fetcher (0.4.5)
++      logutils (>= 0.6)
+     globalid (0.3.6)
+       activesupport (>= 4.1.0)
+     i18n (0.7.0)
+@@ -62,7 +65,9 @@
+       railties (>= 4.2.0)
+       thor (>= 0.14, < 2.0)
+     json (1.8.3)
++    kramdown (1.9.0)
+     libv8 (3.16.14.13)
++    logutils (0.6.1)
+     loofah (2.0.3)
+       nokogiri (>= 1.5.9)
+     mail (2.6.3)
+@@ -94,6 +99,11 @@
+       activesupport (>= 4.2.0.beta, < 5.0)
+       nokogiri (~> 1.6.0)
+       rails-deprecated_sanitizer (>= 1.0.1)
++    rails-erd (1.4.4)
++      activerecord (>= 3.2)
++      activesupport (>= 3.2)
++      choice (~> 0.2.0)
++      ruby-graphviz (~> 1.2)
+     rails-html-sanitizer (1.0.2)
+       loofah (~> 2.0)
+     rails_12factor (0.0.3)
+@@ -109,6 +119,7 @@
+     rake (10.4.2)
+     rdoc (4.2.0)
+     ref (2.0.0)
++    ruby-graphviz (1.2.2)
+     sass (3.4.19)
+     sass-rails (5.0.4)
+       railties (>= 4.0.0, < 5.0)
+@@ -116,6 +127,9 @@
+       sprockets (>= 2.8, < 4.0)
+       sprockets-rails (>= 2.0, < 4.0)
+       tilt (>= 1.1, < 3)
++    schemadoc (1.1.0)
++      fetcher
++      logutils
+     sdoc (0.4.1)
+       json (~> 1.7, >= 1.7.7)
+       rdoc (~> 4.0)
+@@ -144,6 +158,7 @@
+       binding_of_caller (>= 0.7.2)
+       railties (>= 4.0)
+       sprockets-rails (>= 2.0, < 4.0)
++    yard (0.8.7.6)
+ 
+ PLATFORMS
+   ruby
+@@ -153,13 +168,17 @@
+   coffee-rails (~> 4.1.0)
+   jbuilder (~> 2.0)
+   jquery-rails
++  kramdown
+   pg (~> 0.15)
+   rails (= 4.2.5)
++  rails-erd
+   rails_12factor
+   sass-rails (~> 5.0)
++  schemadoc
+   sdoc (~> 0.4.0)
+   spring
+   therubyracer
+   turbolinks
+   uglifier (>= 1.3.0)
+   web-console (~> 2.0)
++  yard
+Index: .yardopts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .yardopts	(revision )
++++ .yardopts	(revision )
+@@ -0,0 +1,4 @@
++--markup markdown # markdown で書けるようになる (ex. "textile", "rdoc", "ruby", "text", "html", "none"
++--markup-provider kramdown # <= お好みで。annotate 使ってる場合は必須
++--no-private
++--hide-api private
+\ No newline at end of file
+Index: db/schema.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- db/schema.rb	(date 1448876692000)
++++ db/schema.rb	(revision )
+@@ -46,6 +46,9 @@
+   end
+ 
+   create_table "users", force: :cascade do |t|
++    t.string   "name"
++    t.string   "password",        null: false
++    t.string   "secret",          null: false
+     t.string   "macaddr",         null: false
+     t.integer  "access_point_id", null: false
+     t.datetime "created_at",      null: false
+Index: config/application.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- config/application.rb	(date 1448876692000)
++++ config/application.rb	(revision )
+@@ -22,5 +22,8 @@
+ 
+     # Do not swallow errors in after_commit/after_rollback callbacks.
+     config.active_record.raise_in_transactional_callbacks = true
++
++    # Strong Parametersでエラーを出す
++    config.action_controller.action_on_unpermitted_parameters = :raise
+   end
+ end
+Index: app/controllers/concerns/errors.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/controllers/concerns/errors.rb	(revision )
++++ app/controllers/concerns/errors.rb	(revision )
+@@ -0,0 +1,53 @@
++# = concern Module Errors
++# Userの作成、削除に際しておパスワードによる保護を行う。
++# Secretを作成することでセキュリティの向上を狙うが、そもそも通信が平文なので……
++
++module Errors
++  extend ActiveSupport::Concern
++  module_function
++
++  # ALWAYS OVERWRITE THIS!!!
++  # ちなみにGithubのパクリ
++  ERROR_HASH = {
++      :error => "true",
++      :message => "Validation Failed",
++      :body => [
++          {
++              :resource => "Issue",
++              :field => "title",
++              :code => "missing_field"
++          }
++      ]
++  }
++
++  def not_mac_address_error(target)
++    body = Hash.new
++    body[:resource] = "user"
++    body[:field] = target
++    body[:code] = "invalid_mac_address"
++    return body
++  end
++
++  def creation_error(type)
++    result = ERROR_HASH
++    result[:message] = "#{type}データの作成に失敗しました"
++    result[:errors]
++
++    p render :json => result, status: 500
++  end
++
++  def update_error
++
++  end
++
++  def deletion_error
++
++  end
++
++  def combine_errors(error_array, message)
++    json = ERROR_HASH
++    json[:message] = message
++    json[:body] = error_array
++    return json
++  end
++end
+Index: config/routes.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- config/routes.rb	(date 1448876692000)
++++ config/routes.rb	(revision )
+@@ -1,6 +1,11 @@
+ Rails.application.routes.draw do
+   post  '/verify' => 'verify#index'
+   get '/verify' => 'verify#getsample'
++  #get '/verify.json' => 'verify#getsample'
++  get '/request/distribution' => 'request#distribution'
++  post  '/account' => 'account#index'
++  get '/account' => 'account#getsample'
++  #get '/account.json' => 'account#getsample'
+   get '/request/distribution' => 'request#distribution'
+   # The priority is based upon order of creation: first created -> highest priority.
+   # See how all your routes lay out with "rake routes".
+Index: app/controllers/account_controller.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/controllers/account_controller.rb	(revision )
++++ app/controllers/account_controller.rb	(revision )
+@@ -0,0 +1,128 @@
++# = account_controller.rb
++# 端末の登録とか位置情報のアップデートとかに使う。
++# verify_controller から変更、増強
++
++#--
++# TODO: 入力に対して複数エラーを検知してJSONでエラー送信できるように
++#  concernsにModule作る。処理を人鳥してから引っかかったとこ全部JSONにして送り返すような
++#  参考: http://qiita.com/suin/items/f7ac4de914e9f3f35884
++#++
++
++# #index で端末のMACアドレスを確認し、<br>
++# 新規登録の場合は VerifyController#create <br>
++# そうでなければ VerifyController#update <br>
++# でそれぞれ処理。
++class AccountController < ApplicationController
++  #include CheckMacAddress
++  #include Errors
++  #include UserPassword
++  @@error_array = Array.new
++
++  def index
++    @user_params = user_params
++
++    # もらったMACアドレスがvalidか判定する
++    error_counter = false
++    @user_params.slice(*[:my_addr, :ap_addr]).each do |elem|
++      unless CheckMacAddress.check_mac_address(elem[1])
++        error_counter = true
++        @@error_array << Errors.not_mac_address_error(elem[0])
++      end
++    end
++    if error_counter
++      render(json: Errors.combine_errors(@@error_array, "MACアドレスがおかしいです"), status: 500) and return
++    end
++
++    # @user = User.where(macaddr: @params[:my_addr]).first
++    # @new_ap = AccessPoint.where(macaddr: @params[:ap_addr]).first
++    #   where().firstじゃなくてwhere().takeになる(find_by()は等価)けど一意に決まってるしこれでいいのでは
++    #   cf.) https://github.com/bbatsov/rails-style-guide/issues/76
++    @user = User.find_by(macaddr: @user_params[:my_addr])
++    @new_ap = AccessPoint.find_by(macaddr: @user_params[:ap_addr])
++
++    if @user.blank?
++      self.create
++    else
++      self.update
++    end
++  end
++
++  # 新規作成
++  def create
++    secret = UserPassword::make_secret
++    @user = User.new(
++        :macaddr => @user_params[:my_addr],
++        :access_point_id => @new_ap.id,
++        :secret => secret,
++        :password => UserPassword::make_password(secret, @user_params[:password])
++    )
++    @user.save
++  rescue => e
++    Errors.creation_error("#{e} #{$@}") and return
++  else
++    render_result
++  end
++
++  # 上書き
++  # updated_at情報の更新や、access_point_idが0になっていた人が帰ってきた時にもこれを使う必要がある
++  def update
++    current_ap = AccessPoint.find(@user.access_point_id)
++
++    if current_ap.macaddr != @new_ap.macaddr
++      @user.access_point_id = @new_ap.id
++      @user.save
++    end
++  rescue => e
++    p e
++    Errors.update_error and return
++  else
++    render_result
++  end
++
++  # データの削除
++  def delete
++    user = User.find_by(name: delete_params[:my_addr])
++    CheckMacAddress.check_password(user, delete_params[:password])
++  rescue
++    Errors.deletion_error and return
++  end
++
++  # GETメソッドテスト用のサンプルメソッド
++  def getsample
++    @me = update_params[:my_addr]
++  end
++
++
++  private
++  def render_result
++    result = {
++        :error => false,
++        :body => {
++            :created_at => @user.created_at,
++            :updated_at => @user.updated_at,
++            :my_addr    => @user.macaddr,
++            :ap_addr    => @new_ap.macaddr,
++            :classroom  => {
++                :name => @user.classroom.name,
++                :x    => @user.classroom.location[0],
++                :y    => @user.classroom.location[1]
++            }
++        }
++    }
++
++    render :json => result
++  end
++
++  def user_params
++    params.permit(:my_addr, :ap_addr, :password)
++  end
++
++  def update_params
++    params.permit(:my_addr, :ap_addr, :format)
++  end
++
++  # トークンでのログインではないので（いまのところ）、my_addrを要求します。
++  def delete_params
++    params.permit(:my_addr, :password, :format)
++  end
++end
+Index: app/assets/javascripts/account.coffee
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/assets/javascripts/account.coffee	(revision )
++++ app/assets/javascripts/account.coffee	(revision )
+@@ -0,0 +1,3 @@
++# Place all the behaviors and hooks related to the matching controller here.
++# All this logic will automatically be available in application.js.
++# You can use CoffeeScript in this file: http://coffeescript.org/
+Index: app/controllers/concerns/user_password.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/controllers/concerns/user_password.rb	(revision )
++++ app/controllers/concerns/user_password.rb	(revision )
+@@ -0,0 +1,24 @@
++# = concern Module UserPassword
++# Userの作成、削除に際しておパスワードによる保護を行う。
++# Secretを作成することでセキュリティの向上を狙うが、そもそも通信が平文なので……
++
++module UserPassword
++  extend ActiveSupport::Concern
++  module_function
++
++  # secretをつくる。かえす。値がbase64なのは趣味。
++  def make_secret
++    SecureRandom.urlsafe_base64(8)
++  end
++
++  def make_password(secret, password)
++    Digest::SHA2.hexdigest(secret + password)
++  end
++
++  # 重要な操作に際してパスワードを要求するときにこれで認可を行う。
++  # セキュリティ的にはそんなに強固ではない。
++  # ユーザーが送ったパスワードと、初回に # で定められたセクレットとを合わせて確認する。
++  def check_password(userobj, passwd)
++    userobj.password == Digest::SHA2.hexdigest(userobj.secret + passwd)
++  end
++end
+\ No newline at end of file
+Index: app/controllers/verify_controller.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/controllers/verify_controller.rb	(date 1448876692000)
++++ app/controllers/verify_controller.rb	(revision )
+@@ -19,10 +19,10 @@
+   include CheckMacAddress
+ 
+   def index
+-    @params = user_params
++    @user_params = user_params
+ 
+     # もらったMACアドレスがvalidか判定する
+-    @params.each do |elem|
++    @user_params.each do |elem|
+       unless check_mac_address(elem[1])
+         render(nothing: true, status: 500) and return
+       end
+@@ -31,8 +31,9 @@
+     # @user = User.where(macaddr: @params[:my_addr]).first
+     # @new_ap = AccessPoint.where(macaddr: @params[:ap_addr]).first
+     #   where().firstじゃなくてwhere().takeになる(find_by()は等価)けど一意に決まってるしこれでいいのでは
+-    @user = User.find_by(macaddr: @params[:my_addr])
+-    @new_ap = AccessPoint.find_by(macaddr: @params[:ap_addr])
++    #   cf.) https://github.com/bbatsov/rails-style-guide/issues/76
++    @user = User.find_by(macaddr: @user_params[:my_addr])
++    @new_ap = AccessPoint.find_by(macaddr: @user_params[:ap_addr])
+ 
+     if @user.blank?
+       self.create
+@@ -55,6 +56,7 @@
+ 
+   # GETメソッドテスト用のサンプルメソッド
+   def getsample
++    @me = update_params[:my_addr]
+   end
+ 
+   # 上書き
+@@ -71,14 +73,30 @@
+   # 新規作成
+   def create
+     @user = User.new(
+-      :macaddr => @params[:my_addr],
++      :macaddr => @user_params[:my_addr],
+       :access_point_id => @new_ap.id
+     )
+     @user.save
+   end
+ 
++  # データの削除
++  def delete
++    user = User.find_by(name: delete_params[:my_addr])
++    check_password(user, delete_params[:password])
++  end
++
+   private
+   def user_params
+     params.require(:check).permit(:my_addr, :ap_addr)
+   end
++
++  def update_params
++    params.permit(:my_addr, :ap_addr, :format)
+-end
++  end
++
++  # トークンでのログインではないので（いまのところ）、my_addrを要求します。
++  def delete_params
++    params.permit(:my_addr, :password, :format)
++  end
++end
++
+Index: app/assets/stylesheets/account.scss
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/assets/stylesheets/account.scss	(revision )
++++ app/assets/stylesheets/account.scss	(revision )
+@@ -0,0 +1,3 @@
++// Place all the styles related to the account controller here.
++// They will automatically be included in application.css.
++// You can use Sass (SCSS) here: http://sass-lang.com/
+Index: db/seeds.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- db/seeds.rb	(date 1448876692000)
++++ db/seeds.rb	(revision )
+@@ -80,5 +80,5 @@
+ end
+ 
+ TEST_USERS.each do |hash|
+-  User.create(hash)
++#  User.create(hash)
+ end
+\ No newline at end of file
+Index: app/controllers/request_controller.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/controllers/request_controller.rb	(date 1448876692000)
++++ app/controllers/request_controller.rb	(revision )
+@@ -20,7 +20,12 @@
+ 
+   def distribution
+     json_hash = Hash.new
++    body_hash = Hash.new
+ 
++    # 1. errorではない
++    json_hash[:error] = false
++
++    # 2. 建物・教室ごとの情報を集める
+     Building.all.select(:id, :name).each do |buil|
+       detail_hash = Hash.new
+       buil_users = 0
+@@ -30,11 +35,16 @@
+         detail_hash[clas.name] = clas_users
+         buil_users += clas_users
+       end
+-      json_hash[buil.name] = [
++
++      # 3. body用のHashに情報を詰め込む
++      body_hash[buil.name] = [
+           buil_users,
+           detail_hash
+       ]
+     end
++
++    # 4. Hash自体を作る
++    json_hash[:body] = body_hash
+ 
+     render :json => json_hash.to_json
+   end
+Index: db/migrate/20151117105223_create_users.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- db/migrate/20151117105223_create_users.rb	(date 1448876692000)
++++ db/migrate/20151117105223_create_users.rb	(revision )
+@@ -1,7 +1,9 @@
+ class CreateUsers < ActiveRecord::Migration
+   def change
+     create_table :users do |t|
+-      #t.string :name
++      t.string :name
++      t.string :password,         #null:false # will be auto-generated
++      t.string :secret,           #null:false # don't let user insert this
+       t.string :macaddr,          null:false
+       t.integer :access_point_id, null:false
+ 
+@@ -9,3 +11,5 @@
+     end
+   end
+ end
++
++# TODO :password :secret のコメントアウトは本番は取ってください！試験がめんどいからつけてるだけです
+\ No newline at end of file
+Index: app/controllers/concerns/check_mac_address.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/controllers/concerns/check_mac_address.rb	(date 1448876692000)
++++ app/controllers/concerns/check_mac_address.rb	(revision )
+@@ -4,6 +4,8 @@
+ # のもののみ有効となっている。（カンマ区切り、スペース入りはアウト）
+ 
+ module CheckMacAddress
++  extend ActiveSupport::Concern
++  module_function
+ 
+   # MACアドレスとしてもらったものが正しい書式であるかを判定する。
+   #  16進数2桁:16進数2桁:16進数2桁:16進数2桁:16進数2桁:16進数2桁
+@@ -15,4 +17,5 @@
+       return false
+     end
+   end
++
+ end
+\ No newline at end of file
+Index: test/controllers/account_controller_test.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- test/controllers/account_controller_test.rb	(revision )
++++ test/controllers/account_controller_test.rb	(revision )
+@@ -0,0 +1,7 @@
++require 'test_helper'
++
++class AccountControllerTest < ActionController::TestCase
++  # test "the truth" do
++  #   assert true
++  # end
++end

@@ -27,8 +27,14 @@ class VerifyController < ApplicationController
         render(nothing: true, status: 500) and return
       end
     end
-    @user = User.where(macaddr: @params[:my_addr]).first
-    @new_ap = AccessPoint.where(macaddr: @params[:ap_addr]).first
+
+    # @user = User.where(macaddr: @params[:my_addr]).first
+    # @new_ap = AccessPoint.where(macaddr: @params[:ap_addr]).first
+    #   where().firstじゃなくてwhere().takeになる(find_by()は等価)けど一意に決まってるしこれでいいのでは
+    #   cf.) https://github.com/bbatsov/rails-style-guide/issues/76
+    @user = User.find_by(macaddr: @params[:my_addr])
+    @new_ap = AccessPoint.find_by(macaddr: @params[:ap_addr])
+
     if @user.blank?
       self.create
     else
@@ -50,6 +56,7 @@ class VerifyController < ApplicationController
 
   # GETメソッドテスト用のサンプルメソッド
   def getsample
+    @me = update_params[:my_addr]
   end
 
   # 上書き
@@ -72,8 +79,24 @@ class VerifyController < ApplicationController
     @user.save
   end
 
+  # データの削除
+  def delete
+    user = User.find_by(name: delete_params[:my_addr])
+    check_password(user, delete_params[:password])
+  end
+
   private
   def user_params
     params.require(:check).permit(:my_addr, :ap_addr)
   end
+
+  def update_params
+    params.permit(:my_addr, :ap_addr, :format)
+  end
+
+  # トークンでのログインではないので（いまのところ）、my_addrを要求します。
+  def delete_params
+    params.permit(:my_addr, :password, :format)
+  end
 end
+

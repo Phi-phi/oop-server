@@ -3,7 +3,7 @@
 # 前提として認証が必要なようにしたい かも
 # index.htmlは存在しません。
 
-class RequestController < ApplicationController
+class DataController < ApplicationController
   include CheckMacAddress
 
   # ここにGETリクエストを送るとキャンパス内の人の分布を便利なJSON形式で返してくれます。
@@ -18,29 +18,42 @@ class RequestController < ApplicationController
   #  }
   # となっている。
 
-  def distribution
-    json_hash = Hash.new
+  def distribution_all
+    body_hash = Hash.new
 
+    # 1. 建物・教室ごとの情報を集める
     Building.all.select(:id, :name).each do |buil|
       detail_hash = Hash.new
       buil_users = 0
       Classroom.where(building_id: buil.id).select(:id, :name).each do |clas|
-        # 今学校にいる人数(a_p_idが0じゃない人)の数えあげ
+        # 2. 今学校にいる人数(a_p_idが0じゃない人)の数えあげ
         clas_users = clas.users.where.not(access_point_id:0).count
         detail_hash[clas.name] = clas_users
         buil_users += clas_users
       end
-      json_hash[buil.name] = [
+
+      # 3. body用のHashに情報を詰め込む
+      body_hash[buil.name] = [
           buil_users,
           detail_hash
       ]
     end
 
-    render :json => json_hash.to_json
+    render_result(body:body_hash)
   end
 
   private
   def user_params
-    params.require(:check).permit(:my_addr, :ap_addr, :classroom)
+    params.permit(:my_addr, :ap_addr, :classroom)
+  end
+
+  def render_result(error:false, message:"", body:Hash.new, status:200)
+    result = {
+        :error => error,
+        :message => message,
+        :body => body
+    }
+
+    render :json => result, status:status
   end
 end
