@@ -40,6 +40,9 @@ gem 'rails_12factor', group: :production
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+
+  # Use RSpec for BDD
+  gem 'rspec-rails', '~> 3.0.0'
 end
 
 group :development do
@@ -50,7 +53,7 @@ group :development do
   gem 'spring'
 
   # Rails ERD図を作ってくれる
-  gem "rails-erd"
+  gem 'rails-erd'
 
   # Databaseのjsonを作ってくれる(みやすい)
   gem 'schemadoc'
