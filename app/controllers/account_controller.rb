@@ -59,8 +59,8 @@ class AccountController < ApplicationController
 
   # ログアウト(ユーザーは残す)
   def logout
+    # keywordのチェック
     @error_array << Errors.password_error("keyword")  unless UserPassword.check_keyword(@user, @params[:keyword])
-    @error_array << Errors.password_error("password")  unless UserPassword.check_password(@user, @params[:password])
 
     # 0が不在を表します
     @user.access_point_id = 0
@@ -96,8 +96,9 @@ class AccountController < ApplicationController
     @error_array << Errors.fatal_error("no user existing") and raise  if @user.blank?
 
     # password/keywordのチェック
-    @error_array << Errors.password_error("keyword")  unless UserPassword.check_keyword(@user, @params[:keyword])
-    @error_array << Errors.password_error("password")  unless UserPassword.check_password(@user, @params[:password])
+    [:keyword, :password].each do |k|
+      @error_array << Errors.password_error(k)  unless UserPassword.check_keyword(@user, @params[k])
+    end
   rescue => e
     @error_array << Errors.fatal_error(e)
     render_result(error:true, message:"fatalエラー", body:@error_array, status:500)
@@ -113,7 +114,7 @@ class AccountController < ApplicationController
 
   # GETメソッドテスト用のサンプルメソッド
   def getsample
-    @me = update_params[:my_addr]
+    @me = account_params[:my_addr]
   end
 
   # -------------------------------------------------------#
@@ -204,17 +205,6 @@ class AccountController < ApplicationController
   def account_params
     params.permit(:my_addr, :ap_addr, :password, :keyword, :format)
   end
-
-  # 更新用
-  def update_params
-    params.permit(:my_addr, :ap_addr, :keyword, :format)
-  end
-
-  # トークンでのログインではないので（いまのところ）、my_addrを要求します。
-  def delete_params
-    params.permit(:my_addr, :password, :keyword, :format)
-  end
-
 
   #----- before_action ------#
 
