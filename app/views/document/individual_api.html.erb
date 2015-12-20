@@ -1,0 +1,10 @@
+<h1><%= @api.name %></h1>
+<br>
+
+<h3>Resource URL</h3>
+<%= @base_url + @api.resource_url %>
+<br><br>
+
+<h3>Parameters</h3>
+<%= render partial: 'parameters', collection: @api.api_parameters , as: 'parameter'%>
+

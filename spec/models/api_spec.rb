@@ -4,7 +4,7 @@ RSpec.describe Api, :type => :model do
   %w(name description resource_url).each do |col|
     it "isn't valid without #{col}" do
       api = Api.new(
-          name: 'sample name',
+          name: 'POST account/sample',
           description: 'hoge hoge',
           resource_url: 'account/sample.json'
       )

@@ -56,12 +56,24 @@ TEST_ACCESS_POINTS = [
 ]
 
 TEST_USERS = [
-    { macaddr:"FF:FF:FF:FF:FF:01", access_point_id:1, password:"", secret:"" },
-    { macaddr:"FF:FF:FF:FF:FF:02", access_point_id:1, password:"", secret:"" },
-    { macaddr:"FF:FF:FF:FF:FF:03", access_point_id:1, password:"", secret:"" },
-    { macaddr:"FF:FF:FF:FF:FF:04", access_point_id:4, password:"", secret:"" },
-    { macaddr:"FF:FF:FF:FF:FF:05", access_point_id:5, password:"", secret:"" },
-    { macaddr:"FF:FF:FF:FF:FF:06", access_point_id:6, password:"", secret:"" }
+    { macaddr:"FF:FF:FF:FF:FF:01", access_point_id:1, password:"", secret:"", keyword:"", salt:"" },
+    { macaddr:"FF:FF:FF:FF:FF:02", access_point_id:1, password:"", secret:"", keyword:"", salt:"" },
+    { macaddr:"FF:FF:FF:FF:FF:03", access_point_id:1, password:"", secret:"", keyword:"", salt:"" },
+    { macaddr:"FF:FF:FF:FF:FF:04", access_point_id:4, password:"", secret:"", keyword:"", salt:"" },
+    { macaddr:"FF:FF:FF:FF:FF:05", access_point_id:5, password:"", secret:"", keyword:"", salt:"" },
+    { macaddr:"FF:FF:FF:FF:FF:06", access_point_id:6, password:"", secret:"", keyword:"", salt:"" }
+]
+
+APIS = [
+    { name:"POST account/register", description:"User情報の登録を行います。アプリケーションの初回起動時に行うようにしてください。", resource_url:"account/register.json" },
+    { name:'POST account/update', description:'情報の更新に使います。バックグランドでの定期通信時、あるいはユーザーの指定した任意のタイミングで利用してください。', resource_url:'account/update.json' }
+]
+
+API_PARAMS = [
+    { api_name:"POST account/register", name:"my_addr", optional:false, description:"端末のMACアドレス。区切る場合は「:」か「.」で。", example_value:"11:23:45:A2:BD:FF" },
+    { api_name:"POST account/register", name:"ap_addr", optional:false, description:"CNS-APのMACアドレス。区切る場合は「:」か「.」で。", example_value:"00:E7:52:B1:BD:FF" },
+    { api_name:"POST account/register", name:"password", optional:false, description:"ユーザーが指定したパスワード。", example_value:"my_password" },
+    { api_name:"POST account/register", name:"keyword", optional:false, description:"アプリケーションが作成したキーワード。", example_value:"some_keyword" }
 ]
 
 
@@ -81,4 +93,12 @@ end
 
 TEST_USERS.each do |hash|
   User.create(hash)
+end
+
+APIS.each do |hash|
+  Api.create(hash)
+end
+
+API_PARAMS.each do |hash|
+  ApiParameter.create(hash)
 end
