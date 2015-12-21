@@ -2,44 +2,85 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.parameters {
-  width: 60%;
-  min-height: 50px;
-  display: -webkit-flex;
+.base_flex {
   display: flex;
+  height: calc(100vh - 15px);
+  flex-direction: row;
 
-  .parameters_lcolumn {
-    width: 40%;
+  .lpanel {
+    max-width: 35%;
+    min-width: 20%;
+    padding-right: 50px;
+    padding-left: 50px;
+    padding-top: 30px;
+    background-color: #2E2F30;
+    
+    h3 {
+      color: ghostwhite;
+    }
+    
+    a {
+      $text-color: #4699AA;
+      text-decoration:none;
+      color: $text-color;
+      &:hover { color: $text-color + #555; }
+    }
+
     display: flex;
-    flex-direction: column;
+    flex-direction: row-reverse;
 
-    .name {
-      height: auto;
-      font-size: larger;
-      font-weight: bold;
+    .list {
+      min-width: 50%;
     }
 
-    .requirement {
-      flex: 1;
-
-      .optional { color: darkgrey }
-      .required { color: orangered }
-    }
   }
 
-  .parameters_rcolumn {
+  .rpanel {
     flex: 1;
-    display: flex;
-    flex-direction: column;
+    padding-left: 50px;
 
-    .discription {
-      flex: 1;
-      font-weight: lighter;
-    }
+    .parameters {
+      width: 60%;
+      height: auto;
+      display: -webkit-flex;
+      display: flex;
 
-    .example_value {
-      height: 100px;
-      font-weight: bold;
+      .parameters_lcolumn {
+        min-width: 40%;
+        display: flex;
+        flex-direction: column;
+
+        .name {
+          min-height: 20px;
+          font-size: larger;
+          font-weight: bold;
+        }
+
+        .requirement {
+          flex: 1;
+
+          .optional { color: darkgrey }
+          .required { color: orangered }
+        }
+      }
+
+      .parameters_rcolumn {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        .discription {
+          flex: 1;
+          color: #335588;
+          font-weight: lighter;
+        }
+
+        .example_value {
+          min-height: 30px;
+          font-size: smaller;
+          .bold { font-weight: bold; }
+        }
+      }
     }
   }
 }
