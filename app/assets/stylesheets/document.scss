@@ -4,7 +4,7 @@
 
 .base_flex {
   display: flex;
-  height: calc(100vh - 15px);
+  height: auto;
   flex-direction: row;
 
   .lpanel {
@@ -37,10 +37,11 @@
 
   .rpanel {
     flex: 1;
+    max-width: 800px;
     padding-left: 50px;
 
     .parameters {
-      width: 60%;
+      max-width: 600px;
       height: auto;
       display: -webkit-flex;
       display: flex;

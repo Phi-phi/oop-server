@@ -6,6 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 #
+require 'csv'
 
 TEST_BUILDINGS = [
     { name:"Alpha" },
@@ -64,19 +65,6 @@ TEST_USERS = [
     { macaddr:"FF:FF:FF:FF:FF:06", access_point_id:6, password:"", secret:"", keyword:"", salt:"" }
 ]
 
-APIS = [
-    { name:"POST account/register", description:"User情報の登録を行います。アプリケーションの初回起動時に行うようにしてください。", resource_url:"account/register.json" },
-    { name:'POST account/update', description:'情報の更新に使います。バックグランドでの定期通信時、あるいはユーザーの指定した任意のタイミングで利用してください。', resource_url:'account/update.json' }
-]
-
-API_PARAMS = [
-    { api_name:"POST account/register", name:"my_addr", optional:false, description:"端末のMACアドレス。区切る場合は「:」か「.」で。", example_value:"11:23:45:A2:BD:FF" },
-    { api_name:"POST account/register", name:"ap_addr", optional:false, description:"CNS-APのMACアドレス。区切る場合は「:」か「.」で。", example_value:"00:E7:52:B1:BD:FF" },
-    { api_name:"POST account/register", name:"password", optional:false, description:"ユーザーが指定したパスワード。", example_value:"my_password" },
-    { api_name:"POST account/register", name:"keyword", optional:false, description:"アプリケーションが作成したキーワード。", example_value:"some_keyword" }
-]
-
-
 #** 書き込み **#
 
 TEST_BUILDINGS.each do |hash|
@@ -95,10 +83,35 @@ TEST_USERS.each do |hash|
   User.create(hash)
 end
 
-APIS.each do |hash|
-  Api.create(hash)
+module Writer
+  class << self
+    def api_parameters_write
+      api_param_arr = CSV.read("db/migrate/seed_sources/api_parameter_seed.csv")
+      api_parameters = Array.new
+      api_param_arr.each_with_index do |row, index|
+        next if index == 0
+        api_parameters << { api_name:row[0], name:row[1], optional:eval(row[2]), description:row[3], example_value:row[4] }
+      end
+
+      api_parameters.each do |hash|
+        ApiParameter.create(hash)
+      end
+    end
+
+    def api_write
+      api_arr = CSV.read("db/migrate/seed_sources/api_seed.csv")
+      apis = Array.new
+      api_arr.each_with_index do |row, index|
+        next if index == 0
+        apis << { name:row[0], description:row[1], resource_url:row[2] }
+      end
+
+      apis.each do |hash|
+        Api.create(hash)
+      end
+    end
+  end
 end
 
-API_PARAMS.each do |hash|
-  ApiParameter.create(hash)
-end
+Writer.api_write
+Writer.api_parameters_write

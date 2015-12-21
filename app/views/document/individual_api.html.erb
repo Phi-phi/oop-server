@@ -7,7 +7,7 @@
     <h1><%= @api.name %></h1>
     <br>
     <h3>Description</h3>
-    <p class="description"><%= @api.description %></p>
+    <%= simple_format @api.description, class:'description' %>
     <br>
     <h3>Resource URL</h3>
     <p><%= @base_url + @api.resource_url %></p>
