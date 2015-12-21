@@ -1,0 +1,17 @@
+api_name,name,optional,description,example_value
+POST account/register,my_addr,false,送信端末のIPv4形式MACアドレスを指定します。この値はサービス内で一意に決まるはずであり、ユーザーの識別子としても扱われます。形式は２桁ごとのコロン（:）区切り、もしくはカンマ区切りで、大文字英数字のみで送るようにしてください。,27:0A:C4:14:BD:FF
+POST account/register,ap_addr,false,取得したCNS-APのIPv4形式MACアドレスを指定します。スキャン結果が複数ある場合は、電波強度の最も強いものをひとつだけ指定してください。形式は２桁ごとのコロン（:）区切り、もしくはカンマ区切りで、大文字英数字のみで送るようにしてください。,EE:54:A4:73:BD:FF
+POST account/register,password,false,ユーザーが任意に指定したパスワードです。このパスワードは初回登録の他にもデータベースからの削除や端末を変えた際の端末移行にも用いますので、忘れさせないようにします。アプリケーション側で保持するのはセキュリティ上問題がありますので行わないでください。仕様上英数字でなくても問題はありません。,some_password
+POST account/register,keyword,false,アプリケーションがランダムに作成するキーワードです。すべての通信で同じキーワードによる認証を行い、データの外部による書き換えを防ぎます。このキーワードは送信と共にアプリケーションで保存してください。,some_keyword
+POST account/update,my_addr,false,送信端末のIPv4形式MACアドレスを指定します。この値はサービス内で一意に決まるはずであり、ユーザーの識別子としても扱われます。形式は２桁ごとのコロン（:）区切り、もしくはカンマ区切りで、大文字英数字のみで送るようにしてください。,27:0A:C4:14:BD:FF
+POST account/update,ap_addr,false,取得したCNS-APのIPv4形式MACアドレスを指定します。スキャン結果が複数ある場合は、電波強度の最も強いものをひとつだけ指定してください。形式は２桁ごとのコロン（:）区切り、もしくはカンマ区切りで、大文字英数字のみで送るようにしてください。,EE:54:A4:73:BD:FF
+POST account/update,keyword,false,account/registerで作成したキーワードと同じものを使用して下さい。,some_keyword
+POST account/logout,my_addr,false,送信端末のIPv4形式MACアドレスを指定します。この値はサービス内で一意に決まるはずであり、ユーザーの識別子としても扱われます。形式は２桁ごとのコロン（:）区切り、もしくはカンマ区切りで、大文字英数字のみで送るようにしてください。,27:0A:C4:14:BD:FF
+POST account/logout,keyword,false,account/registerで作成したキーワードと同じものを使用して下さい。,some_keyword
+POST account/delete,my_addr,false,送信端末のIPv4形式MACアドレスを指定します。この値はサービス内で一意に決まるはずであり、ユーザーの識別子としても扱われます。形式は２桁ごとのコロン（:）区切り、もしくはカンマ区切りで、大文字英数字のみで送るようにしてください。,27:0A:C4:14:BD:FF
+POST account/delete,password,false,ユーザーが入力したパスワードです。このパスワードは初回登録の時と同じものを使用する必要があります。仕様上英数字でなくても問題はありません。,some_password
+POST account/delete,keyword,false,account/registerで作成したキーワードと同じものを使用して下さい。,some_keyword
+GET data/distribution/all,(引数なし),true,引数は必要ありません。,
+GET data/distribution/building,building,false,,
+GET data/distribution/classroom,building,false,,
+GET data/distribution/classroom,classroom,false,,

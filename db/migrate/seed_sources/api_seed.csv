@@ -1,0 +1,11 @@
+name,description,resource_url
+POST account/register,"ユーザーの登録を行います。ユーザー個人に関わる動作（update logoutなど）はregisterが終わっていなければ行えません。アプリケーションの初回起動時にこの操作を行ってください。
+登録にはユーザーのパスワード、およびクライアントの発行するキーワードが必要で、これらは暗号化されて保存されます。キーワードはその後の全ての操作に必要になるので、通信成功後に必ず保存してください。
+登録に成功するとHTTP 200/OKとともに登録情報のJSONが返却されます。
+なお、エイリアスにcreateも使用できます。",account/register.json
+POST account/update,ユーザーの位置情報の更新を行います。ユーザー情報をクリティカルに傷つけないのでパスワードは不要です。,account/update.json
+POST account/logout,"ユーザーの位置情報をundefinedにします。キャンパス外に出たなど、CNS APの補足ができなくなった時に使用してください。
+この操作ではユーザー情報は破棄されません。ユーザー情報の破棄を望む場合は account/delete を使用してください。",account/logout.json
+POST account/delete,ユーザー情報をDBから削除し、アクセスできないようにします。この操作にはユーザーのパスワードが必要になります。,account/delete.json
+GET data/distribution/all,"キャンパス全体の人数分布の情報をJSON形式で返します。Android/iOSアプリケーションはこのAPIを用いてください。逆にWebアプリケーションの場合は data/distribution/classroom などの使用が望ましいでしょう。
+このメソッドに引数は必要ありません。ログインしていなくても利用できます。",data/distribution/all.json

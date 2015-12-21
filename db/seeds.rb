@@ -6,6 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 #
+require 'csv'
 
 TEST_BUILDINGS = [
     { name:"Alpha" },
@@ -56,14 +57,13 @@ TEST_ACCESS_POINTS = [
 ]
 
 TEST_USERS = [
-    { macaddr:"FF:FF:FF:FF:FF:01", access_point_id:1, password:"", secret:"" },
-    { macaddr:"FF:FF:FF:FF:FF:02", access_point_id:1, password:"", secret:"" },
-    { macaddr:"FF:FF:FF:FF:FF:03", access_point_id:1, password:"", secret:"" },
-    { macaddr:"FF:FF:FF:FF:FF:04", access_point_id:4, password:"", secret:"" },
-    { macaddr:"FF:FF:FF:FF:FF:05", access_point_id:5, password:"", secret:"" },
-    { macaddr:"FF:FF:FF:FF:FF:06", access_point_id:6, password:"", secret:"" }
+    { macaddr:"FF:FF:FF:FF:FF:01", access_point_id:1, password:"", secret:"", keyword:"", salt:"" },
+    { macaddr:"FF:FF:FF:FF:FF:02", access_point_id:1, password:"", secret:"", keyword:"", salt:"" },
+    { macaddr:"FF:FF:FF:FF:FF:03", access_point_id:1, password:"", secret:"", keyword:"", salt:"" },
+    { macaddr:"FF:FF:FF:FF:FF:04", access_point_id:4, password:"", secret:"", keyword:"", salt:"" },
+    { macaddr:"FF:FF:FF:FF:FF:05", access_point_id:5, password:"", secret:"", keyword:"", salt:"" },
+    { macaddr:"FF:FF:FF:FF:FF:06", access_point_id:6, password:"", secret:"", keyword:"", salt:"" }
 ]
-
 
 #** 書き込み **#
 
@@ -82,3 +82,36 @@ end
 TEST_USERS.each do |hash|
   User.create(hash)
 end
+
+module Writer
+  class << self
+    def api_parameters_write
+      api_param_arr = CSV.read("db/migrate/seed_sources/api_parameter_seed.csv")
+      api_parameters = Array.new
+      api_param_arr.each_with_index do |row, index|
+        next if index == 0
+        api_parameters << { api_name:row[0], name:row[1], optional:eval(row[2]), description:row[3], example_value:row[4] }
+      end
+
+      api_parameters.each do |hash|
+        ApiParameter.create(hash)
+      end
+    end
+
+    def api_write
+      api_arr = CSV.read("db/migrate/seed_sources/api_seed.csv")
+      apis = Array.new
+      api_arr.each_with_index do |row, index|
+        next if index == 0
+        apis << { name:row[0], description:row[1], resource_url:row[2] }
+      end
+
+      apis.each do |hash|
+        Api.create(hash)
+      end
+    end
+  end
+end
+
+Writer.api_write
+Writer.api_parameters_write

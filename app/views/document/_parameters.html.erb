@@ -1,0 +1,19 @@
+<div class="parameters">
+
+  <div class="parameters_lcolumn">
+    <p class="name"><%= parameter.name %></p>
+    <div class="requirement">
+      <% if parameter.optional %>
+          <p class="optional">Optional</p>
+      <% else %>
+          <p class="required">Required</p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="parameters_rcolumn">
+    <p class="discription"><%= parameter.description %></p>
+    <p class="example_value"><span class="bold">Example Values:</span> <%= parameter.example_value %></p>
+  </div>
+
+</div>

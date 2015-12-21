@@ -1,0 +1,7 @@
+<div class="list">
+  <h3> Public API</h3>
+  <% Api.all.each do |api| %>
+      <% match_name = api.name.match(/(POST|GET) ([a-zA-Z0-9\/]*)/) %>
+      <ul><%= link_to api.name, "/dev/api/reference/#{match_name[1].downcase}/#{match_name[2]}" %></ul>
+  <% end %>
+</div>
