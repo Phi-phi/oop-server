@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   get '/data/distribution/all.json' => 'data#distribution_all'
 
   get '/dev/api/reference/:type/:name' => 'document#individual_api', constraints: { type: /get|post/, name: /[A-Za-z0-9\/]*/ }
+
+  get '/' => 'webapp#index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

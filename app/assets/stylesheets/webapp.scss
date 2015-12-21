@@ -1,0 +1,37 @@
+// Place all the styles related to the webapp controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+html{
+  background-color: blanchedalmond;
+}
+
+.sfc_map {
+  display: flex;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+
+  #svg2 {
+    display: flex;
+    height: 90vh;
+    padding-right: 10%;
+
+    background-color: transparent;
+    pointer-events: fill;
+
+    #layer1 {
+      $build_color: #7e8bae;
+      fill: $build_color;
+      path,rect {
+        transition-duration: 0.6s;
+        &:hover{
+          transition-duration: 0.2s;
+          fill: $build_color + #123;
+        }
+      }
+    }
+  }
+}
