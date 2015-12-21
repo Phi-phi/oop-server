@@ -1,18 +1,17 @@
 <div class="base_flex">
   <div class="lpanel">
-    <%= render partial: 'left_panel', locals: {base_url:@base_url} %>
+    <%= render partial: 'left_panel' %>
   </div>
 
   <div class="rpanel">
     <h1><%= @api.name %></h1>
     <br>
+    <h3>Description</h3>
     <p class="description"><%= @api.description %></p>
-
+    <br>
     <h3>Resource URL</h3>
-    <%= @base_url + @api.resource_url %>
-    <br><br>
-
-
+    <p><%= @base_url + @api.resource_url %></p>
+    <br>
     <h3>Parameters</h3>
     <%= render partial: 'parameters', collection: @api.api_parameters , as: 'parameter' %>
   </div>
