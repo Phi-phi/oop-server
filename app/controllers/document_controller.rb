@@ -3,6 +3,7 @@ class DocumentController < ApplicationController
     title = "#{params[:type].upcase} #{params[:name]}"
     @api = Api.find(title)
     #@all_apis = Api.all
-    @base_url = "http://localhost:3000/"#"http://sfcongestion.herokuapps.com/"
+    #@base_url = "http://localhost:3000/"
+    @base_url = "http://sfcongestion.herokuapps.com/"
   end
 end
