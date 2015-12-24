@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 html{
-  background-color: blanchedalmond;
+  background-color: #112233;//blanchedalmond;
 }
 
 .sfc_map {
@@ -14,24 +14,45 @@ html{
   align-content: center;
   align-items: center;
 
+  // 必要ないところは無効化すると速度上がるらしいよ
+  pointer-events: none;
+
   #svg2 {
+    flex: 1;
     display: flex;
-    height: 90vh;
+    max-height: 90vh;
+    padding-left: 1%;
     padding-right: 10%;
 
     background-color: transparent;
     pointer-events: fill;
 
+    $build_color: #7e8bae;
+
     #layer1 {
-      $build_color: #7e8bae;
       fill: $build_color;
       path,rect {
         transition-duration: 0.6s;
         &:hover{
-          transition-duration: 0.2s;
+          transition-duration: 0.15s;
           fill: $build_color + #123;
+          // 悩ましい！！！！！！
+          filter: drop-shadow(0.5px 0.5px 3px white); // won't work in else than Firefox
+          //filter: url(svg_filters/GaussianBlur.svg#svgBlur001);  // will not have transition-duration
         }
       }
+    }
+
+    #layer2 {
+      fill: $build_color - #112211;//#4876b0;
+    }
+  }
+
+  #numbers {
+    text {
+      text-anchor: middle;
+      font-size: 30px;
+      pointer-events: none;
     }
   }
 }

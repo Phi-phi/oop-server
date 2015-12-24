@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: oop-server_production
-  username: oop-server
-  password: <%= ENV['OOP-SERVER_DATABASE_PASSWORD'] %>
+  username: todoroki-ubuntu #oop-server
+  password: <%= ENV['OOP_SERVER_DATABASE_PASSWORD'] %>

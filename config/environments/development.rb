@@ -38,4 +38,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # websocket-rails 開発環境ではRack::Lockを無効にしないとエラーになるので以下のように設定。
+  config.middleware.delete Rack::Lock
 end
