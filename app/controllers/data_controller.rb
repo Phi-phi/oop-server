@@ -31,13 +31,13 @@ class DataController < ApplicationController
         detail_hash[clas.name] = class_users
         buil_users += class_users
       end
-/*      
-      Classroom.where(building_id: buil.id).select(:id, :name).each do |clas|
-        clas_users = clas.users.where.not(access_point_id:0).count
-        detail_hash[clas.name] = clas_users
-        buil_users += clas_users
-      end
-*/
+      
+#      Classroom.where(building_id: buil.id).select(:id, :name).each do |clas|
+#        clas_users = clas.users.where.not(access_point_id:0).count
+#        detail_hash[clas.name] = clas_users
+#        buil_users += clas_users
+#      end
+
       # 3. body用のHashに情報を詰め込む
       body_hash[buil.name] = [
           buil_users,
